@@ -1,5 +1,7 @@
 import User from "../models/user.model.js";
-import bcrypt, { hash } from 'bcrypt'
+import bcrypt, { hash } from 'bcrypt';
+import generateJWTTokenAndSetCooke from "../utils/genrateToken.js";
+
 
 const signup= async(req,res)=>{
 
@@ -13,6 +15,7 @@ const signup= async(req,res)=>{
         }
         else{
             const user=new User({username:username,password:hashedPassword});
+            generateJWTTokenAndSetCooke(user._id,res);
             await user.save();
             res.status(201).json({message:"user created"});
         }

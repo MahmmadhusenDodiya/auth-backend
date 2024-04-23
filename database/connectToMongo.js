@@ -5,8 +5,6 @@ const connectToMongoDB=async()=>{
     try{
         console.log("Before Connection to mongo");
         await mongoose.connect(process.env.MONGO_URI,{ 
-            useNewUrlParser: true, 
-            useUnifiedTopology: true,
             dbName: 'chatApp'
                   });
         console.log("Connected with MongoDB");
