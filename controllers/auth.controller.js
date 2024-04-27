@@ -46,10 +46,12 @@ export const login= async(req,res)=>{
         else{
             const passwordfromdb =foundUser?.password;
             console.log(passwordfromdb);
-            const user=new User({username:username,password:hashedPassword});
-            generateJWTTokenAndSetCooke(user._id,res);
-            //await user.save();
-            res.status(201).json({message:"Login Successful"});
+            const passwordMatch = await bcrypt.compare(password, foundUser?.password);
+            if(!passwordMatch) {
+                return res.status(401).json({message: "Auth failed"});
+            }
+            generateJWTTokenAndSetCooke(foundUser._id, res);
+            return res.status(201).json({_id: foundUser._id, username: foundUser.username});
             
             
             
